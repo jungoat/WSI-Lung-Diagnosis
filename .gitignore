@@ -1,0 +1,57 @@
+# macOS system file
+**/.DS_Store
+
+# Python cache folders
+__pycache__/
+
+# Ignore entire notebooks folder (optional: if you store experiments here)
+notebooks/
+
+# Jupyter Notebook auto-generated checkpoint files
+.ipynb_checkpoints/
+
+# VSCode workspace settings
+.vscode/
+
+# Environment configuration files
+.env
+*.env
+
+# Model checkpoints and logs
+*.pth
+*.pt
+*.ckpt
+*.log
+*.h5
+*.onnx
+*.pb
+wandb/
+
+# Data folders (e.g., raw data, patches, extracted features)
+data/
+dataset/
+patches/
+features/
+*.h5
+*.svs
+*.npy
+*.npz
+*.tif
+*.tiff
+*.pt
+*.jpg
+*.jpeg
+*.png
+
+# Output files and results from experiments
+results/
+output/
+runs/
+inference/
+*.csv
+*.xlsx
+
+# Temporary or cache files
+*.cache
+*.log
+*.tmp
