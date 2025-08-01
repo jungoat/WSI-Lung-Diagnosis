@@ -313,10 +313,7 @@ class Generic_WSI_Classification_Dataset(Dataset):
 
 
 class Generic_MIL_Dataset(Generic_WSI_Classification_Dataset):
-	def __init__(self,
-		data_dir, 
-		**kwargs):
-	
+	def __init__(self,data_dir, **kwargs):
 		super(Generic_MIL_Dataset, self).__init__(**kwargs)
 		self.data_dir = data_dir
 		self.use_h5 = False
@@ -327,7 +324,11 @@ class Generic_MIL_Dataset(Generic_WSI_Classification_Dataset):
 	def __getitem__(self, idx):
 		slide_id = self.slide_data['slide_id'][idx]
 		label = self.slide_data['label'][idx]
-		if type(self.data_dir) == dict:
+
+		if slide_id.endswith('.svs'):
+			slide_id = slide_id.replace('.svs', '')
+
+		if isinstance(self.data_dir, dict):
 			source = self.slide_data['source'][idx]
 			data_dir = self.data_dir[source]
 		else:
@@ -335,19 +336,17 @@ class Generic_MIL_Dataset(Generic_WSI_Classification_Dataset):
 
 		if not self.use_h5:
 			if self.data_dir:
-				full_path = os.path.join(data_dir, 'pt_files', '{}.pt'.format(slide_id))
+				full_path = os.path.join(data_dir, 'pt_files', f'{slide_id}.pt')
 				features = torch.load(full_path)
 				return features, label
-			
 			else:
 				return slide_id, label
 
 		else:
-			full_path = os.path.join(data_dir,'h5_files','{}.h5'.format(slide_id))
-			with h5py.File(full_path,'r') as hdf5_file:
+			full_path = os.path.join(data_dir, 'h5_files', f'{slide_id}.h5')
+			with h5py.File(full_path, 'r') as hdf5_file:
 				features = hdf5_file['features'][:]
 				coords = hdf5_file['coords'][:]
-
 			features = torch.from_numpy(features)
 			return features, label, coords
 
